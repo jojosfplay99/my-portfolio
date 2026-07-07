@@ -36,7 +36,7 @@ export function HomePage() {
           <div className="mx-auto max-w-4xl text-center">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink-700 bg-ink-850/80 px-4 py-1.5 font-mono text-xs text-ink-300 backdrop-blur-sm animate-fade-in">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              AI Automation Engineer · Operations Developer
+              AI Automation & Operations Specialist
             </div>
             <h1 className="animate-fade-up text-4xl font-bold leading-[1.1] tracking-tight text-ink-100 sm:text-5xl md:text-6xl">
   I turn chaotic business tasks into{' '}
