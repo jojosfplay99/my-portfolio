@@ -20,45 +20,7 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-ink-500">Connect</span>
-            <div className="flex items-center gap-3">
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-ink-300 transition-all duration-200 hover:border-emerald-500/50 hover:text-emerald-300 hover:shadow-glow-emerald"
-                aria-label="GitHub"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-ink-300 transition-all duration-200 hover:border-cyan-500/50 hover:text-cyan-300 hover:shadow-glow-cyan"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="mailto:jobelle.automation@gmail.com"
-                className="flex h-10 w-10 items-center justify-center rounded-lg border border-ink-700 bg-ink-850 text-ink-300 transition-all duration-200 hover:border-emerald-500/50 hover:text-emerald-300 hover:shadow-glow-emerald"
-                aria-label="Email"
-              >
-                <Mail size={18} />
-              </a>
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="flex h-10 items-center gap-2 rounded-lg border border-ink-700 bg-ink-850 px-4 text-sm font-medium text-ink-300 transition-all duration-200 hover:border-emerald-500/50 hover:text-emerald-300"
-                aria-label="Download resume"
-              >
-                <FileText size={16} />
-                Resume
-              </a>
-            </div>
-          </div>
+          
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-ink-800 pt-6 text-xs text-ink-500 sm:flex-row">
