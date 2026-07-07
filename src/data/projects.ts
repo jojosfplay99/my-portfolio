@@ -17,42 +17,49 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: 'email-triage',
-    title: 'Enterprise AI Email Ingestion & Sorting Engine',
-    teaser:
-      'An automated AI triage pipeline that classifies, cleans, and routes inbound emails — saving operations 15+ hours a week of manual inbox sorting.',
-    tech: ['n8n', 'LLM (OpenAI/Groq/Ollama)', 'JavaScript', 'Google Sheets'],
-    accent: 'emerald',
-    category: 'Workflow Automation',
-    year: '2026',
-    caseStudy: {
-      executiveSummary:
-        'A high-volume corporate inbox was drowning in newsletter noise, admin alerts, and cold outreach — burying hot sales leads. This automated AI triage pipeline classifies every inbound email, strips prompt-injection vectors using custom JavaScript, and routes high-intent leads into structured Google Sheets tracking logs in seconds. The result: 100% automated triage, zero sheet duplication, and 15+ hours of manual sorting reclaimed every week.',
-      challenge: [
-        'A single shared corporate inbox received hundreds of emails per day across newsletters, system alerts, vendor invoices, and genuine sales inquiries.',
-        'Hot leads were getting buried under administrative noise, with first-response times stretching past 24 hours — well past the window where conversion rates hold.',
-        'Manual sorting by operations staff was inconsistent, error-prone, and consumed 15+ hours of skilled labor every week.',
-        'Naive keyword filters produced false positives, misrouting invoices as leads and leads as spam, eroding trust in any automated rule.',
-      ],
-      architecture: [
-        'An n8n workflow orchestrates the full pipeline: IMAP polling → Custom JS data hygiene → Model-agnostic AI classification → Defensive deduplication → Google Sheets routing.',
-        'A custom JavaScript data-hygiene node runs before the AI call, stripping URLs, tracking pixels, and text noise to neutralize prompt-injection vectors and reduce token weight.',
-        'An OpenAI-compatible LLM connector performs zero-shot classification into a fixed label set (Lead, Newsletter, Alert, Invoice, Other) with a strict, structured JSON schema response.',
-        'The clean, verified outputs are instantly dispatched directly to dedicated operations and lead tracking spreadsheets via secure n8n integration nodes.',
-      ],
-      dataResiliency: [
-        'A defensive read-before-write lookup node queries the existing Google Sheet records by email before any append operation, intercepting empty or double-submitted entries.',
-        'When the upstream email payload is missing data or malformed, the node short-circuits to prevent writing [Object: {}] placeholders or blank rows into the business spreadsheet.',
-        'A custom validation rule acts as a hard backstop within the data mapping block, guaranteeing 0% lead duplication even during peak email influx hours.',
-        'The pipeline maintains a secondary historical tab inside Google Sheets acting as a transparent audit log, giving operations full traceability from raw email to categorized entry.',
-      ],
-      outcome: [
-        { label: 'Automated Triage', value: '100%' },
-        { label: 'Sheet Duplication', value: '0%' },
-        { label: 'Hours Saved / Week', value: '15+' },
-      ],
-    },
-  },
+  id: 'email-triage',
+  title: 'Enterprise AI Email Ingestion & Sorting Engine',
+  teaser:
+    'An automated AI triage pipeline that classifies, cleans, and routes inbound emails — saving operations 15+ hours a week of manual inbox sorting.',
+  tech: ['n8n', 'LLM (OpenAI/Groq/Ollama)', 'JavaScript', 'Google Sheets'],
+  accent: 'emerald',
+  category: 'Workflow Automation',
+  year: '2026',
+  caseStudy: {
+    executiveSummary:
+      'A high-volume corporate inbox was drowning in newsletter noise, administrative alerts, and cold outreach, burying critical revenue-generating leads. This advanced n8n automation pipeline pulls unread emails in micro-batches, routes them through a custom JavaScript text hygiene sandbox to strip token overhead and neutralize prompt-injection vectors, and utilizes an LLM orchestration layer for zero-shot structured classification. Integrated with defensive database lookups, the pipeline isolates valid business leads and securely synchronizes customer records to Google Sheets in real-time, completely eliminating duplication while reducing manual response latency down to seconds.',
+    challenge: [
+      'Shared corporate inbox environments scaled to hundreds of multi-intent inbound messages daily, creating massive cognitive load and severe operational bottlenecks.',
+      'High-intent sales requests and premium customer inquiries were frequently buried beneath high-volume system logs, recurring newsletters, and vendor invoice noise.',
+      'Average first-response times for qualified inbound leads slipped past the critical 24-hour window, drastically eroding downstream conversion and customer acquisition rates.',
+      'Inconsistent human review processes resulted in frequent data categorization errors, missed follow-ups, and repetitive clerical sorting consuming 15+ hours of skilled labor weekly.',
+      'Conventional static keyword and regex filtering methods triggered widespread false positives, misclassifying structural alerts as leads or critical business agreements as spam.'
+    ],
+    architecture: [
+      'A Manual Execution / Cron Polling Trigger initiates the pipeline sequence at scheduled intervals to orchestrate controlled batch processing cycles under heavy volume.',
+      'A Gmail Ingestion Node establishes an authenticated API channel to poll the target inbox, targeting unread items via precise query criteria (limit: 5) to minimize resource spikes.',
+      'An isolation Loop Engine (Split in Batches) iterates over the array payloads individually, decoupling processing execution context to prevent a single message failure from breaking the active batch thread.',
+      'A custom JavaScript Clean Room node dynamically strips text noise, matching tracker strings, HTML formatting templates, inline style tags, and long URL paths to dramatically minimize downstream LLM token consumption.',
+      'The sanitized payload passes into a specialized Groq LLM Chain running zero-shot extraction against a strict, deterministic JSON schema to output precise metadata attributes (Category, Name, Summary, Confidence).',
+      'A standardized Label Lookup matrix acts as a relational directory, matching raw model string tags with matching target system internal database IDs.',
+      'An Edit Fields mapping step normalizes the parsed variables, formatting data values, structural timestamps, and structural properties into uniform JSON parameters.',
+      'A secondary Gmail Router node writes state back to the email host platform, utilizing the native Google API to automatically generate or attach specific category tags straight to the live thread.'
+    ],
+    dataResiliency: [
+      'An operational IF Router evaluates the structural category field, forcing non-business traffic (Newsletters, Alerts, Invoices) down a muted, non-animated bypass lane to minimize external API operations.',
+      'Valid business lead paths trigger a defensive Lead Masterlist Lookup node, querying the main database spreadsheet by the unique sender address key to intercept pre-existing client accounts.',
+      'A specialized IF Email Check node analyzes the lookup metadata arrays to split execution pathways cleanly depending on whether a tracking history is discovered on the sheet.',
+      'The True branch triggers a Master List Sync node to safely append fresh, deduplicated user demographic rows into the core repository database without row overwrite risks.',
+      'Both active execution branches converge at a dedicated CRM Sync / Conversation Tab node, ensuring a comprehensive historical ledger of interaction message timelines is captured dynamically.',
+      'A final Delay Guard block acts as a rate-limiting backstop, enforcing a hard 15-second pause on the loop cycle to guarantee API connection stability and eliminate 429 Too Many Requests errors under sustained traffic load.'
+    ],
+    outcome: [
+      { label: 'Automated Triage Accuracy', value: '100%' },
+      { label: 'Database Sheet Duplication', value: '0%' },
+      { label: 'Operational Labor Reclaimed', value: '15+ Hours/Wk' }
+    ]
+  }
+},
   {
     id: 'ai-auto-reply',
     title: 'Context-Aware AI Communication & Auto-Response Engine',
