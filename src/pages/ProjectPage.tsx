@@ -166,50 +166,25 @@ export function ProjectPage({ id }: { id: string }) {
           {/* n8n canvas screenshot placeholder */}
           {/* Interactive Workflow Canvas Implementation */}
           <div className="my-10 h-[220px] w-full">
-            <WorkflowCanvas
-              accent={project.accent}
-              nodes={
-                // 1. Matches the specific ID of your AI sorting project
-                project.id === 'email-sorting' || project.id === 'email-triage'
-                  ? [
-                      { 
-                        label: '1. Gmail Ingestion', 
-                        sub: 'Manual / Unread Query' 
-                      },
-                      { 
-                        label: '2. JS Clean Room', 
-                        sub: 'Regex Text Sanitization' 
-                      },
-                      { 
-                        label: '3. Groq LLM Chain', 
-                        sub: 'GPT-OSS Categorization' 
-                      },
-                      { 
-                        label: '4. Gmail Router', 
-                        sub: 'Dynamic API Labeling' 
-                      },
-                      { 
-                        label: '5. CRM Sheet Sync', 
-                        sub: 'Upsert Master & Logs' 
-                      },
-                    ]
-                  : // 2. Fallback layout for other projects in your portfolio
-                    [
-                      { 
-                        label: 'Data Ingestion', 
-                        sub: 'Webhook Trigger' 
-                      },
-                      { 
-                        label: 'Processing Core', 
-                        sub: 'Transformation Node' 
-                      },
-                      { 
-                        label: 'Destination Sync', 
-                        sub: 'External API Export' 
-                      },
-                    ]
-              }
-            />
+            {/* Interactive Workflow Canvas */}
+              <WorkflowCanvas
+                accent={project.accent}
+                nodes={
+                  project.id === 'email-triage' || project.id === 'email-sorting'
+                    ? [
+                        { label: '1. Gmail Ingestion', sub: 'Manual / Unread Filter' },
+                        { label: '2. Clean Room (JS)', sub: 'Regex Sanitization' },
+                        { label: '3. Groq LLM Chain', sub: 'Structured Parsing' },
+                        { label: '4. Gmail Router', sub: 'Dynamic Label API' },
+                        { label: '5. CRM Sheet Sync', sub: 'Upsert Masterlist & Logs' },
+                      ]
+                    : [
+                        { label: 'Data Ingestion', sub: 'Webhook Trigger' },
+                        { label: 'Core Pipeline', sub: 'Data Transformer' },
+                        { label: 'Destination Sync', sub: 'External API Export' },
+                      ]
+                }
+              />
           </div>
 
           <div className="mt-8 space-y-4">

@@ -102,7 +102,7 @@ export function WorkflowCanvas({ nodes: inputNodes, accent, className = '' }: Wo
   }, [inputNodes, accent]);
 
   return (
-    <div className={`w-full rounded-2xl border border-ink-800 bg-ink-950/60 p-1 overflow-hidden relative ${className}`}>
+    <div className={`w-full h-[220px] rounded-2xl border border-ink-800 bg-ink-950/60 p-1 overflow-hidden relative ${className}`}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
