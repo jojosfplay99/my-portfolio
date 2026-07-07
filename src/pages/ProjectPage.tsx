@@ -229,7 +229,7 @@ export function ProjectPage({ id }: { id: string }) {
             </div>
           </div>
 
-          <div className="mt-8 space-y-4">
+          <div className="mt-12 space-y-4">
             {cs.architecture.map((a, i) => (
               <div
                 key={i}
