@@ -1,82 +1,123 @@
-import { type Accent } from './ui';
+import React, { useMemo } from 'react';
+import { ReactFlow, Background, type Node, type Edge, Position } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 
-type Node = { label: string; sub?: string; accent?: Accent };
+// Type definitions matching your project code design tokens
+type Accent = 'emerald' | 'cyan';
 
-const accentBorder: Record<Accent, string> = {
-  emerald: 'border-emerald-500/40 text-emerald-300',
-  cyan: 'border-cyan-500/40 text-cyan-300',
-};
-const accentDot: Record<Accent, string> = {
-  emerald: 'bg-emerald-400',
-  cyan: 'bg-cyan-400',
-};
-const accentLine: Record<Accent, string> = {
-  emerald: 'stroke-emerald-500/50',
-  cyan: 'stroke-cyan-500/50',
-};
-
-export function WorkflowCanvas({
-  nodes,
-  className = '',
-  accent = 'emerald',
-}: {
-  nodes: Node[];
-  className?: string;
+interface InputNodeData {
+  label: string;
+  sub: string;
   accent?: Accent;
-}) {
+  isFirst: boolean;
+  isLast: boolean;
+}
+
+interface WorkflowCanvasProps {
+  nodes: Array<{
+    label: string;
+    sub: string;
+    accent?: Accent;
+  }>;
+  accent: Accent; // Default fallback accent passed from ProjectPage
+  className?: string;
+}
+
+// 1. Custom Node Component matching your portfolio's terminal/ink theme
+const CustomWorkflowNode = ({ data }: { data: InputNodeData }) => {
+  const isEmerald = data.accent === 'emerald';
+  const isCyan = data.accent === 'cyan';
+
+  // Apply conditional borders based on accents
+  const borderClass = isEmerald 
+    ? 'border-emerald-500/40 bg-emerald-500/5 text-emerald-300' 
+    : isCyan 
+    ? 'border-cyan-500/40 bg-cyan-500/5 text-cyan-300' 
+    : 'border-ink-700 bg-ink-900/60 text-ink-200';
+
   return (
-    <div
-      className={`relative overflow-hidden rounded-xl border border-ink-700 bg-ink-950 bg-grid ${className}`}
-    >
-      {/* glow */}
-      <div
-        className={`pointer-events-none absolute -top-20 left-1/2 h-40 w-2/3 -translate-x-1/2 rounded-full blur-3xl ${
-          accent === 'emerald' ? 'bg-emerald-500/10' : 'bg-cyan-500/10'
-        }`}
-      />
-      <div className="relative flex items-center justify-between gap-2 px-4 py-6 sm:px-6 sm:py-8">
-        {nodes.map((n, i) => (
-          <div key={i} className="flex flex-1 items-center">
-            <div className="flex w-full flex-col items-center text-center">
-              <div
-                className={`flex h-12 w-full max-w-[120px] items-center justify-center rounded-lg border bg-ink-850 px-2 py-2 text-[10px] font-medium leading-tight shadow-card sm:text-xs ${accentBorder[n.accent ?? accent]}`}
-              >
-                <span className="truncate">{n.label}</span>
-              </div>
-              {n.sub && (
-                <span className="mt-1.5 font-mono text-[9px] uppercase tracking-wider text-ink-500 sm:text-[10px]">
-                  {n.sub}
-                </span>
-              )}
-            </div>
-            {i < nodes.length - 1 && (
-              <svg
-                className="mx-1 h-5 w-8 shrink-0 sm:mx-2 sm:h-6 sm:w-12"
-                viewBox="0 0 48 24"
-                fill="none"
-                preserveAspectRatio="none"
-              >
-                <path
-                  d="M0 12 H40"
-                  className={`${accentLine[accent]} animate-pulse-line`}
-                  strokeWidth="1.5"
-                  strokeDasharray="4 4"
-                />
-                <circle cx="42" cy="12" r="2.5" className={accentDot[accent]} />
-              </svg>
-            )}
-          </div>
-        ))}
-      </div>
-      <div className="flex items-center justify-between border-t border-ink-800 px-4 py-2.5 sm:px-6">
-        <span className="font-mono text-[10px] uppercase tracking-wider text-ink-500">
-          n8n workflow canvas
-        </span>
-        <span className="flex items-center gap-1.5 font-mono text-[10px] text-ink-500">
-          <span className={`h-1.5 w-1.5 rounded-full ${accentDot[accent]} animate-pulse`} />
-          live
-        </span>
-      </div>
+    <div className={`relative px-4 py-3 rounded-xl border font-mono text-left shadow-lg backdrop-blur-sm min-w-[150px] ${borderClass}`}>
+      {/* Target handle on the left (if not the starting node) */}
+      {!data.isFirst && (
+        <div className="absolute top-1/2 -left-[6px] h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-ink-600 bg-ink-950" style={{ right: 'auto' }} />
+      )}
+      
+      <div className="text-xs font-bold tracking-wide">{data.label}</div>
+      <div className="text-[10px] text-ink-500 mt-0.5 uppercase tracking-wider">{data.sub}</div>
+
+      {/* Source handle on the right (if not the ending node) */}
+      {!data.isLast && (
+        <div className="absolute top-1/2 -right-[6px] h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-ink-600 bg-ink-950" style={{ left: 'auto' }} />
+      )}
+    </div>
+  );
+};
+
+// Register custom nodes with xyflow
+const nodeTypes = {
+  pipelineNode: CustomWorkflowNode,
+};
+
+export function WorkflowCanvas({ nodes: inputNodes, accent, className = '' }: WorkflowCanvasProps) {
+  // 2. Map your raw data array into a grid of x/y nodes dynamically
+  const { nodes, edges } = useMemo(() => {
+    const calculatedNodes: Node[] = inputNodes.map((node, index) => {
+      const isFirst = index === 0;
+      const isLast = index === inputNodes.length - 1;
+
+      return {
+        id: `node-${index}`,
+        type: 'pipelineNode',
+        // Space nodes 220px apart horizontally
+        position: { x: index * 220, y: 40 },
+        sourcePosition: Position.Right,
+        targetPosition: Position.Left,
+        data: {
+          label: node.label,
+          sub: node.sub,
+          accent: node.accent || accent, // fallback to project accent if node configuration is blank
+          isFirst,
+          isLast,
+        },
+      };
+    });
+
+    // 3. Chain sequential nodes together automatically with step-edges
+    const calculatedEdges: Edge[] = [];
+    for (let i = 0; i < inputNodes.length - 1; i++) {
+      calculatedEdges.push({
+        id: `edge-${i}-${i + 1}`,
+        source: `node-${i}`,
+        target: `node-${i + 1}`,
+        type: 'smoothstep',
+        animated: true,
+        style: {
+          stroke: accent === 'emerald' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(6, 182, 212, 0.3)',
+          strokeWidth: 2,
+        },
+      });
+    }
+
+    return { nodes: calculatedNodes, edges: calculatedEdges };
+  }, [inputNodes, accent]);
+
+  return (
+    <div className={`w-full rounded-2xl border border-ink-800 bg-ink-950/60 p-1 overflow-hidden relative ${className}`}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        fitView
+        fitViewOptions={{ padding: 0.3 }}
+        nodesConnectable={false}
+        nodesDraggable={true}
+        elementsSelectable={false}
+        zoomOnScroll={false}
+        panOnScroll={false}
+        preventScrolling={true}
+      >
+        <Background variant="dots" gap={16} size={1} color="rgba(255,255,255,0.07)" />
+      </ReactFlow>
     </div>
   );
 }
