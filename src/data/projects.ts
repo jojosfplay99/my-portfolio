@@ -81,7 +81,7 @@ export const projects: Project[] = [
         'A verification filter checks for blank fields or looping message threads, completely preventing automated infinite loops or malformed text deliveries.',
       ],
       outcome: [
-        'First-Response Latency', value: '<2m' },
+        { label: 'First-Response Latency', value: '<2m' },
         { label: 'Contextual Accuracy', value: '98%' },
         { label: 'Manual Drafting Saved', value: '20+ hrs/wk' },
       ],
@@ -115,7 +115,7 @@ export const projects: Project[] = [
         'All raw categorization data is backed up to an immutable audit sheet, giving operations teams complete visibility into daily routing accuracy.',
       ],
       outcome: [
-        'Critical Alert Delivery', value: '<30s' },
+        { label: 'Critical Alert Delivery', value: '<30s' },
         { label: 'Misrouted Communications', value: '0%' },
         { label: 'Team Response Velocity', value: '-75%' },
       ],
