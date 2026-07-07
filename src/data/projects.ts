@@ -17,42 +17,42 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-  id: 'email-triage',
-  title: 'Enterprise AI Email Ingestion & Sorting Engine',
-  teaser:
-    'An automated AI triage pipeline that classifies, cleans, and routes inbound emails — saving operations 15+ hours a week of manual inbox sorting.',
-  tech: ['n8n', 'Groq', 'JavaScript', 'Google Sheets'],
-  accent: 'emerald',
-  category: 'Workflow Automation',
-  year: '2026',
-  caseStudy: {
-    executiveSummary:
-      'A high-volume corporate inbox was drowning in newsletter noise, admin alerts, and cold outreach — burying hot sales leads. This automated AI triage pipeline classifies every inbound email, strips prompt-injection vectors using custom JavaScript, and routes high-intent leads into structured Google Sheets tracking logs in seconds. The result: 100% automated triage, zero sheet duplication, and 15+ hours of manual sorting reclaimed every week.',
-    challenge: [
-      'A single shared corporate inbox received hundreds of emails per day across newsletters, system alerts, vendor invoices, and genuine sales inquiries.',
-      'Hot leads were getting buried under administrative noise, with first-response times stretching past 24 hours — well past the window where conversion rates hold.',
-      'Manual sorting by operations staff was inconsistent, error-prone, and consumed 15+ hours of skilled labor every week.',
-      'Naive keyword filters produced false positives, misrouting invoices as leads and leads as spam, eroding trust in any automated rule.',
-    ],
-    architecture: [
-      'An n8n workflow orchestrates the full pipeline: IMAP polling → Custom JS data hygiene → Groq AI classification → Defensive deduplication → Google Sheets routing.',
-      'A custom JavaScript data-hygiene node runs before the LLM call, stripping URLs, tracking pixels, and text noise to neutralize prompt-injection vectors and reduce token weight.',
-      'Groq-hosted Llama models perform zero-shot classification into a fixed label set (Lead, Newsletter, Alert, Invoice, Other) with a strict, structured JSON schema response.',
-      'The clean, verified outputs are instantly dispatched directly to dedicated operations and lead tracking spreadsheets via secure n8n integration nodes.',
-    ],
-    dataResiliency: [
-      'A defensive read-before-write lookup node queries the existing Google Sheet records by email before any append operation, intercepting empty or double-submitted entries.',
-      'When the upstream email payload is missing data or malformed, the node short-circuits to prevent writing [Object: {}] placeholders or blank rows into the business spreadsheet.',
-      'A custom validation rule acts as a hard backstop within the data mapping block, guaranteeing 0% lead duplication even during peak email influx hours.',
-      'The pipeline maintains a secondary historical tab inside Google Sheets acting as a transparent audit log, giving operations full traceability from raw email to categorized entry.',
-    ],
-    outcome: [
-      { label: 'Automated Triage', value: '100%' },
-      { label: 'Sheet Duplication', value: '0%' },
-      { label: 'Hours Saved / Week', value: '15+' },
-    ],
+    id: 'email-triage',
+    title: 'Enterprise AI Email Ingestion & Sorting Engine',
+    teaser:
+      'An automated AI triage pipeline that classifies, cleans, and routes inbound emails — saving operations 15+ hours a week of manual inbox sorting.',
+    tech: ['n8n', 'LLM (OpenAI/Groq/Ollama)', 'JavaScript', 'Google Sheets'],
+    accent: 'emerald',
+    category: 'Workflow Automation',
+    year: '2026',
+    caseStudy: {
+      executiveSummary:
+        'A high-volume corporate inbox was drowning in newsletter noise, admin alerts, and cold outreach — burying hot sales leads. This automated AI triage pipeline classifies every inbound email, strips prompt-injection vectors using custom JavaScript, and routes high-intent leads into structured Google Sheets tracking logs in seconds. The result: 100% automated triage, zero sheet duplication, and 15+ hours of manual sorting reclaimed every week.',
+      challenge: [
+        'A single shared corporate inbox received hundreds of emails per day across newsletters, system alerts, vendor invoices, and genuine sales inquiries.',
+        'Hot leads were getting buried under administrative noise, with first-response times stretching past 24 hours — well past the window where conversion rates hold.',
+        'Manual sorting by operations staff was inconsistent, error-prone, and consumed 15+ hours of skilled labor every week.',
+        'Naive keyword filters produced false positives, misrouting invoices as leads and leads as spam, eroding trust in any automated rule.',
+      ],
+      architecture: [
+        'An n8n workflow orchestrates the full pipeline: IMAP polling → Custom JS data hygiene → Model-agnostic AI classification → Defensive deduplication → Google Sheets routing.',
+        'A custom JavaScript data-hygiene node runs before the AI call, stripping URLs, tracking pixels, and text noise to neutralize prompt-injection vectors and reduce token weight.',
+        'An OpenAI-compatible LLM connector performs zero-shot classification into a fixed label set (Lead, Newsletter, Alert, Invoice, Other) with a strict, structured JSON schema response.',
+        'The clean, verified outputs are instantly dispatched directly to dedicated operations and lead tracking spreadsheets via secure n8n integration nodes.',
+      ],
+      dataResiliency: [
+        'A defensive read-before-write lookup node queries the existing Google Sheet records by email before any append operation, intercepting empty or double-submitted entries.',
+        'When the upstream email payload is missing data or malformed, the node short-circuits to prevent writing [Object: {}] placeholders or blank rows into the business spreadsheet.',
+        'A custom validation rule acts as a hard backstop within the data mapping block, guaranteeing 0% lead duplication even during peak email influx hours.',
+        'The pipeline maintains a secondary historical tab inside Google Sheets acting as a transparent audit log, giving operations full traceability from raw email to categorized entry.',
+      ],
+      outcome: [
+        { label: 'Automated Triage', value: '100%' },
+        { label: 'Sheet Duplication', value: '0%' },
+        { label: 'Hours Saved / Week', value: '15+' },
+      ],
+    },
   },
-},
   {
     id: 'lead-enrichment',
     title: 'Real-Time Lead Enrichment & CRM Sync',
