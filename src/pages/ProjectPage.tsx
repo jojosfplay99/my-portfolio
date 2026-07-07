@@ -204,7 +204,7 @@ export function ProjectPage({ id }: { id: string }) {
                           label: '10. IF Record Check', 
                           sub: 'New or Existing?', 
                           gridX: 9, 
-                          gridY: 0,
+                          gridY: -1,
                           isConditional: true,
                           connections: [
                             { targetId: 'master_add', label: 'New', sourceHandle: 'true-out' },
@@ -214,7 +214,7 @@ export function ProjectPage({ id }: { id: string }) {
                         
                         // Branch Destinations
                         { id: 'master_add', label: '11. Master Update', sub: 'Log New Contact', gridX: 10, gridY: 0, connections: ['crm_conv'] },
-                        { id: 'crm_conv', label: '12. CRM Sync', sub: 'Log Conversation', gridX: 11, gridY: 1, connections: ['delay'] },
+                        { id: 'crm_conv', label: '12. CRM Sync', sub: 'Log Conversation', gridX: 11, gridY: 0, connections: ['delay'] },
                         
                         // Convergence Node
                         { id: 'delay', label: '13. Delay Guard', sub: '15s Limit Buffer', gridX: 12, gridY: 1 }
