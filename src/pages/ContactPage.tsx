@@ -1,18 +1,56 @@
 import { useState, type FormEvent } from 'react';
-import { Check, Clock, Loader2, Mail, MessageSquare, Send, Github, Linkedin, Inbox } from 'lucide-react';
+import { Check, Clock, Loader2, Mail, MessageSquare, Send, Github, Linkedin, Inbox, AlertCircle } from 'lucide-react';
 import { Button } from '../components/ui';
 
-type Status = 'idle' | 'submitting' | 'success';
+// Added 'error' to status type definition
+type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function ContactPage() {
   const [status, setStatus] = useState<Status>('idle');
   const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setStatus('submitting');
-    // Simulated submission — in production this would POST to an edge function.
-    setTimeout(() => setStatus('success'), 1200);
+
+    // Vite extracts these from your system environment / GitHub secrets at build time
+    const BOT_TOKEN = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
+    const CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
+
+    // Formatting structured markdown layout for clean mobile scanning
+    const telegramText = `
+🚀 *New Pipeline Lead Request*
+    
+*Name:* ${form.name}
+*Email:* ${form.email}
+*Company:* ${form.company || 'N/A'}
+
+*Operational Bottleneck:*
+${form.message}
+    `.trim();
+
+    try {
+      // Direct POST delivery request to Telegram Bot API
+      const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: telegramText,
+          parse_mode: 'Markdown',
+        }),
+      });
+
+      if (response.ok) {
+        setStatus('success');
+      } else {
+        console.error('Telegram API rejected payload:', await response.text());
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error('Network failure sending to Telegram:', error);
+      setStatus('error');
+    }
   };
 
   const reset = () => {
@@ -207,6 +245,15 @@ export function ContactPage() {
                       className="w-full resize-none rounded-lg border border-ink-700 bg-ink-950 px-3.5 py-2.5 text-sm text-ink-100 placeholder:text-ink-600 transition-colors focus:border-emerald-500/50 focus:outline-none"
                     />
                   </div>
+
+                  {/* Operational Fail State Message */}
+                  {status === 'error' && (
+                    <div className="flex items-center gap-2.5 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400 animate-fade-up">
+                      <AlertCircle size={16} className="shrink-0" />
+                      <span>Pipeline routing error. Please reach out via direct email map instead.</span>
+                    </div>
+                  )}
+
                   <Button
                     type="submit"
                     size="lg"
@@ -215,7 +262,7 @@ export function ContactPage() {
                   >
                     {status === 'submitting' ? (
                       <>
-                        <Loader2 size={18} className="animate-spin" /> Sending...
+                        <Loader2 size={18} className="animate-spin" /> Transmitting...
                       </>
                     ) : (
                       <>
