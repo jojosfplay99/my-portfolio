@@ -164,38 +164,52 @@ export function ProjectPage({ id }: { id: string }) {
           </h2>
 
           {/* n8n canvas screenshot placeholder */}
-          <div className="mt-8">
+          {/* Interactive Workflow Canvas Implementation */}
+          <div className="my-10 h-[220px] w-full">
             <WorkflowCanvas
               accent={project.accent}
-              className="min-h-[180px]"
               nodes={
-                project.id === 'email-triage'
+                // 1. Matches the specific ID of your AI sorting project
+                project.id === 'email-sorting' || project.id === 'email-triage'
                   ? [
-                      { label: 'IMAP Inbox', sub: 'trigger' },
-                      { label: 'Data Hygiene', sub: 'JS node', accent: 'cyan' },
-                      { label: 'AI Classify', sub: 'Groq LLM' },
-                      { label: 'Dedupe', sub: 'read-before-write', accent: 'cyan' },
-                      { label: 'CRM Route', sub: 'output' },
+                      { 
+                        label: '1. Gmail Ingestion', 
+                        sub: 'Manual / Unread Query' 
+                      },
+                      { 
+                        label: '2. JS Clean Room', 
+                        sub: 'Regex Text Sanitization' 
+                      },
+                      { 
+                        label: '3. Groq LLM Chain', 
+                        sub: 'GPT-OSS Categorization' 
+                      },
+                      { 
+                        label: '4. Gmail Router', 
+                        sub: 'Dynamic API Labeling' 
+                      },
+                      { 
+                        label: '5. CRM Sheet Sync', 
+                        sub: 'Upsert Master & Logs' 
+                      },
                     ]
-                  : project.id === 'lead-enrichment'
-                  ? [
-                      { label: 'Webhook', sub: 'trigger' },
-                      { label: 'Enrich', sub: 'Clearbit' },
-                      { label: 'Score', sub: '0–100' },
-                      { label: 'Upsert', sub: 'Postgres' },
-                      { label: 'Slack', sub: 'alert' },
-                    ]
-                  : [
-                      { label: 'Audit Log', sub: 'source' },
-                      { label: 'Metrics', sub: 'compute' },
-                      { label: 'Realtime', sub: 'Supabase' },
-                      { label: 'Dashboard', sub: 'React' },
+                  : // 2. Fallback layout for other projects in your portfolio
+                    [
+                      { 
+                        label: 'Data Ingestion', 
+                        sub: 'Webhook Trigger' 
+                      },
+                      { 
+                        label: 'Processing Core', 
+                        sub: 'Transformation Node' 
+                      },
+                      { 
+                        label: 'Destination Sync', 
+                        sub: 'External API Export' 
+                      },
                     ]
               }
             />
-            <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-wider text-ink-600">
-              [ n8n workflow canvas — screenshot placeholder ]
-            </p>
           </div>
 
           <div className="mt-8 space-y-4">
