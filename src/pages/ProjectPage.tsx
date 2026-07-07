@@ -167,33 +167,62 @@ export function ProjectPage({ id }: { id: string }) {
           {/* Interactive Workflow Canvas Implementation */}
           <div className="my-10 h-[220px] w-full">
             {/* Interactive Workflow Canvas */}
-              {/* Interactive Workflow Canvas */}
-              <WorkflowCanvas
-                accent={project.accent}
-                nodes={
-                  project.id === 'email-triage' || project.id === 'email-sorting'
-                    ? [
-                        { label: '1. Gmail Ingestion', sub: 'Fetch 5 Unread' },
-                        { label: '2. Loop Engine', sub: 'Split in Batches' },
-                        { label: '3. JS Clean Room', sub: 'Regex Text Hygiene' },
-                        { label: '4. Groq LLM Chain', sub: 'GPT-OSS Parse' },
-                        { label: '5. Label Lookup', sub: 'Match Internal IDs' },
-                        { label: '6. Edit Fields', sub: 'Stage Metadata Set' },
-                        { label: '7. Gmail Label Router', sub: 'Apply Label API' },
-                        { label: '8. IF Router', sub: 'Check: isBusinessEmail' },
-                        { label: '9. Sheet Master Lookup', sub: 'Query Email Record' },
-                        { label: '10. IF Record Check', sub: 'New or Existing Lead?' },
-                        { label: '11. Master Update', sub: 'Append New Lead Row' },
-                        { label: '12. CRM Sync', sub: 'Log Conversation' },
-                        { label: '13. Delay Guard', sub: '15s Limit Buffer' }
-                      ]
-                    : [
-                        { label: 'Data Ingestion', sub: 'Webhook Trigger' },
-                        { label: 'Core Pipeline', sub: 'Data Transformer' },
-                        { label: 'Destination Sync', sub: 'External API Export' }
-                      ]
-                }
-              />
+{/* Branching Split Workflow Canvas */}
+<WorkflowCanvas
+  accent={project.accent}
+  nodes={
+    project.id === 'email-triage' || project.id === 'email-sorting'
+      ? [
+          { id: 'ingest', label: '1. Gmail Ingestion', sub: 'Fetch 5 Unread', gridX: 0, gridY: 1, connections: ['loop'] },
+          { id: 'loop', label: '2. Loop Engine', sub: 'Split in Batches', gridX: 1, gridY: 1, connections: ['cleaner'] },
+          { id: 'cleaner', label: '3. JS Clean Room', sub: 'Regex Text Hygiene', gridX: 2, gridY: 1, connections: ['llm'] },
+          { id: 'llm', label: '4. Groq LLM Chain', sub: 'GPT-OSS Parse', gridX: 3, gridY: 1, connections: ['lookup'] },
+          { id: 'lookup', label: '5. Label Lookup', sub: 'Match Internal IDs', gridX: 4, gridY: 1, connections: ['set'] },
+          { id: 'set', label: '6. Edit Fields', sub: 'Stage Metadata Set', gridX: 5, gridY: 1, connections: ['gmail_label'] },
+          { id: 'gmail_label', label: '7. Gmail Router', sub: 'Apply Label API', gridX: 6, gridY: 1, connections: ['if_business'] },
+          
+          // Split Point 1: Business Check
+          { 
+            id: 'if_business', 
+            label: '8. IF Router', 
+            sub: 'Check Business Tag', 
+            gridX: 7, 
+            gridY: 1, 
+            connections: [
+              { targetId: 'sheet_lookup', label: 'True' },
+              { targetId: 'delay', label: 'False', isMuted: true }
+            ] 
+          },
+          
+          { id: 'sheet_lookup', label: '9. Sheet Lookup', sub: 'Query Email Record', gridX: 8, gridY: 1, connections: ['if_exists'] },
+          
+          // Split Point 2: Lead Exists Check
+          { 
+            id: 'if_exists', 
+            label: '10. IF Record Check', 
+            sub: 'New or Existing?', 
+            gridX: 9, 
+            gridY: 1, 
+            connections: [
+              { targetId: 'master_add', label: 'New' },
+              { targetId: 'crm_conv', label: 'Exists' }
+            ] 
+          },
+          
+          // Diverged Processing Paths
+          { id: 'master_add', label: '11. Master Update', sub: 'Log New Contact', gridX: 10, gridY: 0, connections: ['crm_conv'] },
+          { id: 'crm_conv', label: '12. CRM Sync', sub: 'Log Conversation', gridX: 11, gridY: 1, connections: ['delay'] },
+          
+          // Convergence Destination Point
+          { id: 'delay', label: '13. Delay Guard', sub: '15s Limit Buffer', gridX: 12, gridY: 1 }
+        ]
+      : [
+          { label: 'Data Ingestion', sub: 'Webhook Trigger' },
+          { label: 'Core Pipeline', sub: 'Data Transformer' },
+          { label: 'Destination Sync', sub: 'External API Export' }
+        ]
+  }
+/>
           </div>
 
           <div className="mt-8 space-y-4">
