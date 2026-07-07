@@ -213,7 +213,7 @@ export function ProjectPage({ id }: { id: string }) {
                         },
                         
                         // Branch Destinations
-                        { id: 'master_add', label: '11. Master Update', sub: 'Log New Contact', gridX: 10, gridY: 0, connections: ['crm_conv'] },
+                        { id: 'master_add', label: '11. Master Update', sub: 'Log New Contact', gridX: 10, gridY: -2, connections: ['crm_conv'] },
                         { id: 'crm_conv', label: '12. CRM Sync', sub: 'Log Conversation', gridX: 11, gridY: 0, connections: ['delay'] },
                         
                         // Convergence Node
