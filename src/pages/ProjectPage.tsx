@@ -165,7 +165,7 @@ export function ProjectPage({ id }: { id: string }) {
 
           {/* n8n canvas screenshot placeholder */}
           {/* Interactive Workflow Canvas Implementation */}
-          <div className="my-10 h-[220px] w-full">
+          <div className="my-10 h-[480px] w-full">
             {/* Interactive Workflow Canvas */}
             {/* Interactive Workflow Canvas */}
             <div className="my-10">
