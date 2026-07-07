@@ -167,21 +167,30 @@ export function ProjectPage({ id }: { id: string }) {
           {/* Interactive Workflow Canvas Implementation */}
           <div className="my-10 h-[220px] w-full">
             {/* Interactive Workflow Canvas */}
+              {/* Interactive Workflow Canvas */}
               <WorkflowCanvas
                 accent={project.accent}
                 nodes={
                   project.id === 'email-triage' || project.id === 'email-sorting'
                     ? [
-                        { label: '1. Gmail Ingestion', sub: 'Manual / Unread Filter' },
-                        { label: '2. Clean Room (JS)', sub: 'Regex Sanitization' },
-                        { label: '3. Groq LLM Chain', sub: 'Structured Parsing' },
-                        { label: '4. Gmail Router', sub: 'Dynamic Label API' },
-                        { label: '5. CRM Sheet Sync', sub: 'Upsert Masterlist & Logs' },
+                        { label: '1. Gmail Ingestion', sub: 'Fetch 5 Unread' },
+                        { label: '2. Loop Engine', sub: 'Split in Batches' },
+                        { label: '3. JS Clean Room', sub: 'Regex Text Hygiene' },
+                        { label: '4. Groq LLM Chain', sub: 'GPT-OSS Parse' },
+                        { label: '5. Label Lookup', sub: 'Match Internal IDs' },
+                        { label: '6. Edit Fields', sub: 'Stage Metadata Set' },
+                        { label: '7. Gmail Label Router', sub: 'Apply Label API' },
+                        { label: '8. IF Router', sub: 'Check: isBusinessEmail' },
+                        { label: '9. Sheet Master Lookup', sub: 'Query Email Record' },
+                        { label: '10. IF Record Check', sub: 'New or Existing Lead?' },
+                        { label: '11. Master Update', sub: 'Append New Lead Row' },
+                        { label: '12. CRM Sync', sub: 'Log Conversation' },
+                        { label: '13. Delay Guard', sub: '15s Limit Buffer' }
                       ]
                     : [
                         { label: 'Data Ingestion', sub: 'Webhook Trigger' },
                         { label: 'Core Pipeline', sub: 'Data Transformer' },
-                        { label: 'Destination Sync', sub: 'External API Export' },
+                        { label: 'Destination Sync', sub: 'External API Export' }
                       ]
                 }
               />
