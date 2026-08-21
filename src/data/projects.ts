@@ -27,31 +27,31 @@ export const projects: Project[] = [
   year: '2026',
   caseStudy: {
     executiveSummary:
-      'A busy inbox was getting buried — newsletters, automated alerts, and cold outreach were burying the emails that actually mattered: real customer leads. \n\nThis automation checks unread emails in small batches, cleans up the text (removing junk links and anything suspicious), and uses AI to sort each one into the right category. It then automatically identifies genuine business leads and adds them straight to a Google Sheet — with no duplicates — so your team can follow up in seconds instead of digging through a cluttered inbox.',
+      'A busy inbox was getting buried — newsletters, automated alerts, and cold outreach were burying the emails that actually mattered: real customer leads. This automation checks unread emails in small batches, cleans up the text (removing junk links and anything suspicious), and uses AI to sort each one into the right category. It then automatically identifies genuine business leads and adds them straight to a Google Sheet — with no duplicates — so your team can follow up in seconds instead of digging through a cluttered inbox.',
     challenge: [
-      'Shared corporate inbox environments scaled to hundreds of multi-intent inbound messages daily, creating massive cognitive load and severe operational bottlenecks.',
-      'High-intent sales requests and premium customer inquiries were frequently buried beneath high-volume system logs, recurring newsletters, and vendor invoice noise.',
-      'Average first-response times for qualified inbound leads slipped past the critical 24-hour window, drastically eroding downstream conversion and customer acquisition rates.',
-      'Inconsistent human review processes resulted in frequent data categorization errors, missed follow-ups, and repetitive clerical sorting consuming 15+ hours of skilled labor weekly.',
-      'Conventional static keyword and regex filtering methods triggered widespread false positives, misclassifying structural alerts as leads or critical business agreements as spam.'
+      'The shared team inbox was getting hundreds of emails a day, and staff were spending too much time just sorting through them.',
+      'Real sales inquiries and customer questions kept getting buried under system alerts, newsletters, and vendor invoices.',
+      'Important leads often didn\'t get a reply within 24 hours, which hurt the chances of turning them into paying customers.',
+      'Manual sorting was inconsistent — emails got miscategorized, follow-ups were missed, and the team lost 15+ hours a week just organizing messages.',
+      'Basic keyword filters didn\'t work well either — they often mislabeled real leads as spam, or flagged routine alerts as urgent.',
     ],
     architecture: [
-      'A Manual Execution / Cron Polling Trigger initiates the pipeline sequence at scheduled intervals to orchestrate controlled batch processing cycles under heavy volume.',
-      'A Gmail Ingestion Node establishes an authenticated API channel to poll the target inbox, targeting unread items via precise query criteria (limit: 5) to minimize resource spikes.',
-      'An isolation Loop Engine (Split in Batches) iterates over the array payloads individually, decoupling processing execution context to prevent a single message failure from breaking the active batch thread.',
-      'A custom JavaScript Clean Room node dynamically strips text noise, matching tracker strings, HTML formatting templates, inline style tags, and long URL paths to dramatically minimize downstream LLM token consumption.',
-      'The sanitized payload passes into a specialized Groq LLM Chain running zero-shot extraction against a strict, deterministic JSON schema to output precise metadata attributes (Category, Name, Summary, Confidence).',
-      'A standardized Label Lookup matrix acts as a relational directory, matching raw model string tags with matching target system internal database IDs.',
-      'An Edit Fields mapping step normalizes the parsed variables, formatting data values, structural timestamps, and structural properties into uniform JSON parameters.',
-      'A secondary Gmail Router node writes state back to the email host platform, utilizing the native Google API to automatically generate or attach specific category tags straight to the live thread.'
+      'Every so often, the system automatically checks for new work to do — no one has to click a button to start it.',
+      'It logs into your Gmail and grabs the 5 (or more) newest unread emails, so it never gets overwhelmed by a huge inbox all at once.',
+      "It handles each email one at a time. This way, if one email causes a hiccup, it won't stop the rest from going through.",
+      'Before the AI reads an email, the system cleans it up — removing tracking junk, formatting clutter, and long links — so the AI can focus on what actually matters (and it keeps costs down too).',
+      "The cleaned-up email is sent to a fast AI model that reads it and pulls out the key info: what category it belongs to, who it's from, a short summary, and how confident it is in that read.",
+      "The system then matches the AI's labels to the actual folder/tag names already set up in your email account.",
+      'All the extracted details get tidied up and put into a consistent, organized format.',
+      "Finally, the system goes back into Gmail and applies the right label to the email automatically — so it's sorted and ready for you without you lifting a finger.",
     ],
     dataResiliency: [
-      'An operational IF Router evaluates the structural category field, forcing non-business traffic (Newsletters, Alerts, Invoices) down a muted, non-animated bypass lane to minimize external API operations.',
-      'Valid business lead paths trigger a defensive Lead Masterlist Lookup node, querying the main database spreadsheet by the unique sender address key to intercept pre-existing client accounts.',
-      'A specialized IF Email Check node analyzes the lookup metadata arrays to split execution pathways cleanly depending on whether a tracking history is discovered on the sheet.',
-      'The True branch triggers a Master List Sync node to safely append fresh, deduplicated user demographic rows into the core repository database without row overwrite risks.',
-      'Both active execution branches converge at a dedicated CRM Sync / Conversation Tab node, ensuring a comprehensive historical ledger of interaction message timelines is captured dynamically.',
-      'A final Delay Guard block acts as a rate-limiting backstop, enforcing a hard 15-second pause on the loop cycle to guarantee API connection stability and eliminate 429 Too Many Requests errors under sustained traffic load.'
+      'The system checks what category each email was sorted into. Stuff like newsletters, alerts, and invoices gets quietly set aside — it skips extra processing since it\'s not something you need to act on.',
+      "Emails that look like real business leads get checked against your master client list, using the sender's email address to see if this person has contacted you before.",
+      'The system looks at that check and decides: is this a brand new contact, or someone already in the system?',
+      "If it's a new contact, their info gets added to your master list — safely, without duplicating or overwriting anyone already there.",
+      "Whether they're new or returning, every contact's message gets logged in your CRM, so you always have a full history of the conversation in one place.",
+      "Lastly, the system pauses for about 15 seconds between cycles. This isn't a flaw — it's a safety buffer that keeps everything running smoothly and stops the email service from cutting you off for going too fast.",
     ],
     outcome: [
       { label: 'Automated Triage Accuracy', value: '100%' },
