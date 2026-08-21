@@ -27,7 +27,7 @@ export const projects: Project[] = [
   year: '2026',
   caseStudy: {
     executiveSummary:
-      'A high-volume corporate inbox was drowning in newsletter noise, administrative alerts, and cold outreach, burying critical revenue-generating leads. This advanced n8n automation pipeline pulls unread emails in micro-batches, routes them through a custom JavaScript text hygiene sandbox to strip token overhead and neutralize prompt-injection vectors, and utilizes an LLM orchestration layer for zero-shot structured classification. Integrated with defensive database lookups, the pipeline isolates valid business leads and securely synchronizes customer records to Google Sheets in real-time, completely eliminating duplication while reducing manual response latency down to seconds.',
+      'A busy inbox was getting buried — newsletters, automated alerts, and cold outreach were burying the emails that actually mattered: real customer leads. /nThis automation checks unread emails in small batches, cleans up the text (removing junk links and anything suspicious), and uses AI to sort each one into the right category. It then automatically identifies genuine business leads and adds them straight to a Google Sheet — with no duplicates — so your team can follow up in seconds instead of digging through a cluttered inbox.',
     challenge: [
       'Shared corporate inbox environments scaled to hundreds of multi-intent inbound messages daily, creating massive cognitive load and severe operational bottlenecks.',
       'High-intent sales requests and premium customer inquiries were frequently buried beneath high-volume system logs, recurring newsletters, and vendor invoice noise.',
