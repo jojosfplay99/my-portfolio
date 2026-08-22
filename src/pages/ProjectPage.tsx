@@ -163,11 +163,9 @@ export function ProjectPage({ id }: { id: string }) {
             How the pipeline is wired
           </h2>
 
-          {/* n8n canvas screenshot placeholder */}
-          {/* Interactive Workflow Canvas Implementation */}
+          {/* 
           <div className="my-10 h-[360px] w-full">
-            {/* Interactive Workflow Canvas */}
-            {/* Interactive Workflow Canvas */}
+            
             <div className="my-10">
               <WorkflowCanvas
                 accent={project.accent}
@@ -227,6 +225,15 @@ export function ProjectPage({ id }: { id: string }) {
                 }
               />
             </div>
+          </div>
+          */}
+
+          <div className="my-10 overflow-hidden rounded-xl border border-ink-700 bg-ink-950">
+            <img
+              src="/images/workflow.png"
+              alt="Automation workflow architecture"
+              className="h-auto w-full object-contain"
+            />
           </div>
 
           <div className="mt-12 space-y-4">
