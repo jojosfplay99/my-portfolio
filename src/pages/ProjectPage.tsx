@@ -229,12 +229,12 @@ export function ProjectPage({ id }: { id: string }) {
           */}
 
           <div className="my-10 overflow-hidden rounded-xl border border-ink-700 bg-ink-950">
-            <img
-              src="/images/workflow.png"
-              alt="Automation workflow architecture"
-              className="h-auto w-full object-contain"
-            />
-          </div>
+  <img
+    src={`${import.meta.env.BASE_URL}images/workflow.png`}
+    alt="Automation workflow architecture"
+    className="h-auto w-full object-contain"
+  />
+</div>
 
           <div className="mt-12 space-y-4">
             {cs.architecture.map((a, i) => (
