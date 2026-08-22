@@ -62,21 +62,7 @@ export function HomePage() {
                 </Button>
               </Link>
             </div>
-          </div>
-
-          {/* Hero workflow preview */}
-          <div className="mx-auto mt-16 max-w-4xl animate-fade-up [animation-delay:300ms]">
-            <WorkflowCanvas
-              accent="emerald"
-              nodes={[
-                { label: 'IMAP Inbox', sub: 'trigger' },
-                { label: 'Data Hygiene', sub: 'JS node', accent: 'cyan' },
-                { label: 'AI Classify', sub: 'Groq LLM' },
-                { label: 'Dedupe', sub: 'read-before-write', accent: 'cyan' },
-                { label: 'CRM Route', sub: 'output' },
-              ]}
-            />
-          </div>
+          </div>          
         </div>
       </section>
 

@@ -313,39 +313,6 @@ export function ProjectPage({ id }: { id: string }) {
         </div>
       </section>
 
-      {/* NEXT PROJECTS */}
-      <section className="border-t border-ink-800 bg-ink-950/50 py-16">
-        <div className="mx-auto max-w-4xl px-5 sm:px-6">
-          <h3 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-ink-500">
-            More case studies
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {otherProjects.map((p) => (
-              <Link key={p.id} to={`/projects/${p.id}`} className="block">
-                <div
-                  className={`group rounded-xl border border-ink-700 bg-ink-850/50 p-5 transition-all duration-300 hover:border-ink-600 hover:bg-ink-800/80 ${
-                    p.accent === 'emerald' ? 'hover:shadow-glow-emerald' : 'hover:shadow-glow-cyan'
-                  }`}
-                >
-                  <div className="mb-1 font-mono text-[10px] uppercase tracking-wider text-ink-500">
-                    {p.category}
-                  </div>
-                  <h4 className="text-base font-semibold text-ink-100">{p.title}</h4>
-                  <div
-                    className={`mt-3 inline-flex items-center gap-1.5 text-sm font-medium ${
-                      p.accent === 'emerald' ? 'text-emerald-300' : 'text-cyan-300'
-                    }`}
-                  >
-                    Read case study
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="border-t border-ink-800 py-16">
         <div className="mx-auto max-w-4xl px-5 text-center sm:px-6">
